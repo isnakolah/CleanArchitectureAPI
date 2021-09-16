@@ -1,6 +1,6 @@
-﻿# EPharmacy API Application
+﻿# Clean Architecture API Application
 
-This is the EPharmacy Application for the logic involving the Pharmacies.
+This is the Clean Architecture API Application Template.
 
 ## Technologies
 
@@ -15,8 +15,8 @@ This is the EPharmacy Application for the logic involving the Pharmacies.
 ## Getting Started
 
 1. Install the latest [.NET SDK](https://dotnet.microsoft.com/download)
-2. Run `git clone https://github.com/poneahealthltd/e-pharmacy-server.git EPharmacyServer` to clone the repo.
-3. Navigate `EPharmacyServer/src/RESTApi` to change directory into the project.
+2. Run `git clone https://github.com/isnakolah/clean-architecture-api.git CleanArchitectureAPI` to clone the repo.
+3. Navigate `CleanArchitectureAPI/src/RESTApi` to change directory into the project.
 4. Run `dotnet restore` to load project Nuget packages.
 5. Run `dotnet run` to run the project or `dotnet watch run` to auto compile the application.
 
