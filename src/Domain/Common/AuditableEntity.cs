@@ -1,21 +1,18 @@
-﻿using System;
+﻿namespace Domain.Common;
 
-namespace Domain.Common
+public abstract class AuditableEntity
 {
-    public abstract class AuditableEntity
-    {
-        public DateTime CreatedOn { get; set; }
+    public DateTime CreatedOn { get; set; }
 
-        public string CreatedBy { get; set; }
+    public string CreatedBy { get; set; }
 
-        public DateTime? LastModified { get; set; }
+    public DateTime? LastModified { get; set; }
 
-        public string LastModifiedBy { get; set; }
+    public string LastModifiedBy { get; set; }
 
-        public bool IsDeleted { get; set; } = false;
+    public bool IsDeleted { get; set; } = false;
 
-        public DateTime? DeletedOn { get; set; }
+    public DateTime? DeletedOn { get; set; }
 
-        public string DeletedBy { get; set; }
-    }
+    public string DeletedBy { get; set; }
 }

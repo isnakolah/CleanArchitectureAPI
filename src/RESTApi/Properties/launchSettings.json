@@ -15,7 +15,7 @@
         "DOTNET_ENVIRONMENT": "Development"
       }
     },
-    "RESTApi": {
+    "Development": {
       "commandName": "Project",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"

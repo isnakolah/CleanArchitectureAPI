@@ -1,11 +1,8 @@
-﻿using System;
+﻿namespace Application.Common.Exceptions;
 
-namespace Application.Common.Exceptions
+public class UnauthorizeException : Exception
 {
-    public class UnauthorizeException : Exception
+    public UnauthorizeException() : base("User was not found!")
     {
-        public UnauthorizeException() : base("User was not found!")
-        {
-        }
     }
 }

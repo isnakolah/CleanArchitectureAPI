@@ -1,16 +1,13 @@
-﻿using System;
+﻿namespace Domain.ValueObjects;
 
-namespace Domain.ValueObjects
+public class CalculateAge
 {
-    public class CalculateAge
+    public static int GetCurrentAge(DateTime DOB)
     {
-        public static int GetCurrentAge(DateTime DOB)
-        {
-            var today = DateTime.Today;
-            var age = today.Year - DOB.Year;
+        var today = DateTime.Today;
+        var age = today.Year - DOB.Year;
 
-            // Check if leap year
-            return (DOB.Date > today.AddYears(-age)) ? age-- : age;
-        }
+        // Check if leap year
+        return (DOB.Date > today.AddYears(-age)) ? age-- : age;
     }
 }

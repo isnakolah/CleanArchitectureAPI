@@ -1,12 +1,12 @@
 ﻿using Application.Common.Models;
 using Application.Identity.Commands.DTOs;
 using Application.Tests.Intergration;
-using Helpers;
 using FluentAssertions;
 using System.Net;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Xunit;
+using RESTApi.Helpers;
 
 namespace RESTApi.Tests.Intergration.Identity
 {

@@ -1,18 +1,14 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿namespace Application.Common.Interfaces;
 
-namespace Application.Common.Interfaces
+/// <summary>
+/// IApplicationDbContext interface
+/// </summary>
+public interface IApplicationDbContext
 {
     /// <summary>
-    /// IApplicationDbContext interface
+    /// Persisting the changes
     /// </summary>
-    public interface IApplicationDbContext
-    {
-        /// <summary>
-        /// Persisting the changes
-        /// </summary>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>An integer</returns>
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
-    }
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>An integer</returns>
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

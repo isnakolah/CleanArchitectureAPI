@@ -1,7 +1,6 @@
-﻿namespace Application.Common.Constants
+﻿namespace Application.Common.Models;
+
+public class Roles
 {
-    public class Roles
-    {
-        public const string SystemAdminRole = "SystemAdmin";
-    }
-} 
+    public const string SystemAdminRole = "SystemAdmin";
+}

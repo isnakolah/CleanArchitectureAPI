@@ -1,16 +1,14 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace RESTApi.Controllers
+namespace RESTApi.Controllers.v1;
+
+[Authorize]
+[ApiController]
+public abstract class BaseApiController : ControllerBase
 {
-    [Authorize]
-    [ApiController]
-    public abstract class BaseApiController : ControllerBase
-    {
-        private ISender _mediator;
+    private ISender _mediator;
 
-        protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetService<ISender>();
-    }
+    protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetService<ISender>();
 }

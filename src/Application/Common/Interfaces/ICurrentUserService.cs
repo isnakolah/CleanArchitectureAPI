@@ -1,13 +1,12 @@
-﻿namespace Application.Common.Interfaces
+﻿namespace Application.Common.Interfaces;
+
+/// <summary>
+/// ICurrentUserService interface
+/// </summary>
+public interface ICurrentUserService
 {
     /// <summary>
-    /// ICurrentUserService interface
+    /// Get the ID of the current user
     /// </summary>
-    public interface ICurrentUserService
-    {
-        /// <summary>
-        /// Get the ID of the current user
-        /// </summary>
-        string UserId { get; }
-    }
+    string UserId { get; }
 }

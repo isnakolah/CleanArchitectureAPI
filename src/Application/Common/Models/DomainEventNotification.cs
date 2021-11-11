@@ -1,15 +1,14 @@
 ﻿using Domain.Common;
 using MediatR;
 
-namespace Application.Common.Models
-{
-    public class DomainEventNotification<TDomainEvent> : INotification where TDomainEvent : DomainEvent
-    {
-        public DomainEventNotification(TDomainEvent domainEvent)
-        {
-            DomainEvent = domainEvent;
-        }
+namespace Application.Common.Models;
 
-        public TDomainEvent DomainEvent { get; }
+public class DomainEventNotification<TDomainEvent> : INotification where TDomainEvent : DomainEvent
+{
+    public DomainEventNotification(TDomainEvent domainEvent)
+    {
+        DomainEvent = domainEvent;
     }
+
+    public TDomainEvent DomainEvent { get; }
 }

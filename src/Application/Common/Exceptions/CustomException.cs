@@ -1,22 +1,19 @@
-using System;
+namespace Application.Common.Exceptions;
 
-namespace Application.Common.Exceptions
+public class CustomException : Exception
 {
-    public class CustomException : Exception
+    public CustomException()
+        : base()
     {
-        public CustomException()
-            : base()
-        {
-        }
+    }
 
-        public CustomException(string message)
-            : base(message)
-        {
-        }
+    public CustomException(string message)
+        : base(message)
+    {
+    }
 
-        public CustomException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
+    public CustomException(string message, Exception innerException)
+        : base(message, innerException)
+    {
     }
 }

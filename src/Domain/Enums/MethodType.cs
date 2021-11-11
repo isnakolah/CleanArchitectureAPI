@@ -1,8 +1,7 @@
-﻿namespace Domain.Enums
+﻿namespace Domain.Enums;
+
+public enum MethodType
 {
-    public enum MethodType
-    {
-        Get = 0,
-        Post = 1,
-    }
+    Get = 0,
+    Post = 1,
 }
