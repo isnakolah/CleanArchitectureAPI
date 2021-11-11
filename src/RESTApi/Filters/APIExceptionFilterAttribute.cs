@@ -1,15 +1,15 @@
-﻿using Application.Common.Exceptions;
+﻿using System;
+using System.Collections.Generic;
+using Application.Common.Exceptions;
+using Application.Common.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Collections.Generic;
 
 namespace RESTApi.Filters
 {
     public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
-
         private readonly IDictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
 
         public ApiExceptionFilterAttribute()
@@ -18,6 +18,7 @@ namespace RESTApi.Filters
             _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
                 { typeof(ValidationException), HandleValidationException },
+                { typeof(CustomException), HandleCustomException },
                 { typeof(NotFoundException), HandleNotFoundException },
                 { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
                 { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
@@ -49,26 +50,43 @@ namespace RESTApi.Filters
             HandleUnknownException(context);
         }
 
-        private void HandleValidationException(ExceptionContext context)
+        private void HandleUnknownException(ExceptionContext context)
         {
-            var exception = context.Exception as ValidationException;
+            var details = ServiceResult.Failed(ServiceError.DefaultError);
 
-            var details = new ValidationProblemDetails(exception.Errors)
+            context.Result = new ObjectResult(details)
             {
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+                StatusCode = StatusCodes.Status500InternalServerError
             };
 
-            context.Result = new BadRequestObjectResult(details);
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleValidationException(ExceptionContext context)
+        {
+            if (context.Exception is ValidationException exception)
+            {
+                var details = ServiceResult.Failed(exception.Errors, ServiceError.Validation);
+
+                context.Result = new BadRequestObjectResult(details);
+            }
 
             context.ExceptionHandled = true;
         }
 
         private void HandleInvalidModelStateException(ExceptionContext context)
         {
-            var details = new ValidationProblemDetails(context.ModelState)
-            {
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
-            };
+            var exception = new ValidateModelException(context.ModelState);
+
+            context.Result = new BadRequestObjectResult(ServiceResult.Failed(exception.Errors, ServiceError.ValidationFormat));
+
+            context.ExceptionHandled = true;
+        }
+
+
+        private void HandleCustomException(ExceptionContext context)
+        {
+            var details = ServiceResult.Failed(ServiceError.CustomMessage(context.Exception.Message));
 
             context.Result = new BadRequestObjectResult(details);
 
@@ -77,45 +95,16 @@ namespace RESTApi.Filters
 
         private void HandleNotFoundException(ExceptionContext context)
         {
-            var exception = context.Exception as NotFoundException;
-
-            var details = new ProblemDetails()
-            {
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                Title = "The specified resource was not found.",
-                Detail = exception.Message
-            };
+            var details = ServiceResult.Failed(ServiceError.CustomMessage(context.Exception is NotFoundException exception ? exception.Message : ServiceError.NotFound.ToString()));
 
             context.Result = new NotFoundObjectResult(details);
 
             context.ExceptionHandled = true;
         }
 
-        private void HandleUnauthorizedAccessException(ExceptionContext context)
-        {
-            var details = new ProblemDetails
-            {
-                Status = StatusCodes.Status401Unauthorized,
-                Title = "Unauthorized",
-                Type = "https://tools.ietf.org/html/rfc7235#section-3.1"
-            };
-
-            context.Result = new ObjectResult(details)
-            {
-                StatusCode = StatusCodes.Status401Unauthorized
-            };
-
-            context.ExceptionHandled = true;
-        }
-
         private void HandleForbiddenAccessException(ExceptionContext context)
         {
-            var details = new ProblemDetails
-            {
-                Status = StatusCodes.Status403Forbidden,
-                Title = "Forbidden",
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3"
-            };
+            var details = ServiceResult.Failed(ServiceError.ForbiddenError);
 
             context.Result = new ObjectResult(details)
             {
@@ -125,19 +114,11 @@ namespace RESTApi.Filters
             context.ExceptionHandled = true;
         }
 
-        private void HandleUnknownException(ExceptionContext context)
+        private void HandleUnauthorizedAccessException(ExceptionContext context)
         {
-            var details = new ProblemDetails
-            {
-                Status = StatusCodes.Status500InternalServerError,
-                Title = "An error occurred while processing your request.",
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1"
-            };
+            var details = ServiceResult.Failed(ServiceError.ForbiddenError);
 
-            context.Result = new ObjectResult(details)
-            {
-                StatusCode = StatusCodes.Status500InternalServerError
-            };
+            context.Result = new UnauthorizedObjectResult(details);
 
             context.ExceptionHandled = true;
         }

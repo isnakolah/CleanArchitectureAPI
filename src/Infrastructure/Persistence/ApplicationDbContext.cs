@@ -78,9 +78,11 @@ namespace Infrastructure.Persistence
                     .SelectMany(x => x)
                     .Where(domainEvent => !domainEvent.IsPublished)
                     .FirstOrDefault();
+
                 if (domainEventEntity == null) break;
 
                 domainEventEntity.IsPublished = true;
+                
                 await _domainEventService.Publish(domainEventEntity);
             }
         }
